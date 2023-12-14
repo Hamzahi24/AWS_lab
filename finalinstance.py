@@ -40,23 +40,40 @@ async def on_message(message):
     
     '''If condition for channel if in random it'll run all condition statements that checks the string indexes and lower case values
     of several different strings'''
-    
-    if channel == "random": 
-        if user_message.lower() == "hello" or user_message.lower() == "hi": 
-            await message.channel.send(f'Hello {username}') #Format string
-            return #Returning values passed into the function
-        
-        #Nested if condition to output 'hello' if user inputs 'hello world'.
-        elif user_message.lower() == "hello world": 
-            await message.channel.send(f'hello') 
-        
-        #Nested if condition to output my ec2 server data if user inputs 'tell me about my server!'.
-        elif user_message.lower() == "tell me about my server!": 
-            await message.channel.send(f'Your ec2 server data:\nRegion: {ec2_metadata.region}\nIP Address: {ec2_metadata.public_ipv4}\nZone: {ec2_metadata.availability_zone}\nServer Instance: {ec2_metadata.instance_type}')
-        
-        #Nested if condition to output 'Bye' if user inputs 'bye'.
-        elif user_message.lower() == "bye": 
-            await message.channel.send(f'Bye {username}')
+    try:                                             #Error handling when bot messages fails to send.
+        if channel == "random": 
+            if user_message.lower() == "hello" or user_message.lower() == "hi": 
+                await message.channel.send(f'Hello {username}') #Format string
+                return #Returning values passed into the function
+            
+            #Nested if condition to output 'hello' if user inputs 'hello world'.
+            elif user_message.lower() == "hello world":
+                try:                                      #Error handling when bot messages fails to send.      
+                    await message.channel.send(f'hello') 
+                except discord.errors.HTTPException as err:     #The output if an error occurs.
+                    print(f'Message wasn\'t sent. Try again: {err}')
+
+            #Nested if condition to output my ec2 server data if user inputs 'tell me about my server!'.
+            elif user_message.lower() == "tell me about my server!": 
+                try:                                    #Error handling when bot messages fails to send.
+                    await message.channel.send(f'Your ec2 server data:\nRegion: {ec2_metadata.region}\nIP Address: {ec2_metadata.public_ipv4}\nZone: {ec2_metadata.availability_zone}\nServer Instance: {ec2_metadata.instance_type}')
+                except discord.errors.HTTPException as err:         #The output if an error occurs.
+                    print(f'Message wasn\'t sent. Try again: {err}')
+
+            #Nested if condition to output 'Bye' if user inputs 'bye'.
+            elif user_message.lower() == "bye": 
+                try:                                                #Error handling when bot messages fails to send.
+                    await message.channel.send(f'Bye {username}')
+                except discord.errors.HTTPException as err:         #The output if an error occurs.
+                    print(f'Message wasn\'t sent. Try again: {err}')
+
+            else:
+                await message.channel.send(
+                    f"I'm sorry, the command '{user_message}' is not a valid command."
+                )
+    except Exception as error:          #The output if an error occurs.
+
+        print(f'The following error occured: {error}')
  
 #Start execution by passing the token object.
 client.run(token)
