@@ -74,6 +74,7 @@ async def on_message(message):
     except Exception as error:          #The output if an error occurs.
 
         print(f'The following error occured: {error}')
+        
  
 #Start execution by passing the token object.
 client.run(token)
