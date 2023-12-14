@@ -40,6 +40,7 @@ async def on_message(message):
     
     '''If condition for channel if in random it'll run all condition statements that checks the string indexes and lower case values
     of several different strings'''
+   
     try:                                             #Error handling when bot messages fails to send.
         if channel == "random": 
             if user_message.lower() == "hello" or user_message.lower() == "hi": 
@@ -74,7 +75,6 @@ async def on_message(message):
     except Exception as error:          #The output if an error occurs.
 
         print(f'The following error occured: {error}')
-        
- 
+
 #Start execution by passing the token object.
 client.run(token)
